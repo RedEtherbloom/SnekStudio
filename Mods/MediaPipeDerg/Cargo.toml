@@ -1,0 +1,9 @@
+[package]
+name = "MediaPipeDerg"
+version = "0.1.0"
+edition = "2024"
+authors = ["Etherbloom <etherbloom@mailbox.org>"]
+description = "SnekStudios new GPU accelerated MediaPipe backend. Named Derg as dragons are cool :3(bite me haters)"
+license = "MIT OR Apache-2.0"
+
+[dependencies]

@@ -27,3 +27,13 @@ Build/godot.zip
 Build/godot_templates.tpz
 
 Saved/*
+
+# Rust artifacts
+debug
+target
+
+# Rustfmt backup files
+**/*.rs.bk
+
+# MSVC Windows builds of rustc generate these, which store debugging information
+*.pdb
