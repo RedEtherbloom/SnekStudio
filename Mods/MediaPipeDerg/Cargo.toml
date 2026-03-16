@@ -6,4 +6,15 @@ authors = ["Etherbloom <etherbloom@mailbox.org>"]
 description = "SnekStudios new GPU accelerated MediaPipe backend. Named Derg as dragons are cool :3(bite me haters)"
 license = "MIT OR Apache-2.0"
 
+[lib]
+crate-type = ["cdylib"] # We build as a godot artifact
+
 [dependencies]
+burn = {version = "0.21.0-pre.2", features = ["ndarray"], default-features = false} # TODO: Figure out proper accelerated setup
+burn-store = {version = "0.21.0-pre.2", features = ["std", "burnpack"]}
+godot= {version = "0.4.5"}
+log = { version = "0.4.29"} # TODO: Augment with tracing
+thiserror = {version = "2.0.18"}
+
+[build-dependencies]
+burn-onnx = { git = "https://github.com/tracel-ai/burn-onnx" }
