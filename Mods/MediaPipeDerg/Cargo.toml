@@ -13,6 +13,7 @@ crate-type = ["cdylib"] # We build as a godot artifact
 burn = {version = "0.21.0-pre.2", features = ["ndarray"], default-features = false} # TODO: Figure out proper accelerated setup
 burn-store = {version = "0.21.0-pre.2", features = ["std", "burnpack"]}
 godot= {version = "0.4.5"}
+image = "0.25.10"
 log = { version = "0.4.29"} # TODO: Augment with tracing
 thiserror = {version = "2.0.18"}
 
