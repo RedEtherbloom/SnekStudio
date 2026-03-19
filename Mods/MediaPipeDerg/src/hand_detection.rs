@@ -5,6 +5,7 @@ mod tests {
     use burn::{
         Tensor,
         backend::NdArray,
+        prelude::Backend,
         tensor::{Shape, TensorData},
     };
     use image::{ImageReader, Pixel};
@@ -17,6 +18,7 @@ mod tests {
 
         let model: Model<OurBackend> = Model::default();
         let device = Default::default();
+        OurBackend::seed(&device, 42);
 
         let hand_image =
             ImageReader::open(concat!(env!("CARGO_MANIFEST_DIR"), "/test_data/hand.jpg"))
