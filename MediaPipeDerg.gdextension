@@ -1,0 +1,14 @@
+[configuration]
+entry_symbol = "gdext_rust_init"
+compatibility_minimum = 4.6
+reloadable = true
+
+[libraries]
+linux.debug.x86_64 =     "res://target/debug/libMediaPipeDerg.so"
+linux.release.x86_64 =   "res://target/release/libMediaPipeDerg.so"
+windows.debug.x86_64 =   "res://target/debug/MediaPipeDerg.dll"
+windows.release.x86_64 = "res://target/release/MediaPipeDerg.dll"
+macos.debug =            "res://target/debug/libMediaPipeDerg.dylib"
+macos.release =          "res://target/release/libMediaPipeDerg.dylib"
+macos.debug.arm64 =      "res://target/debug/libMediaPipeDerg.dylib"
+macos.release.arm64 =    "res://target/release/libMediaPipeDerg.dylib"
