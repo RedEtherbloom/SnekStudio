@@ -15,6 +15,7 @@ burn-vision = "0.21.0-pre.2"
 burn-store = {version = "0.21.0-pre.2", features = ["std", "burnpack"]}
 godot= {version = "0.4.5"}
 image = "0.25.10"
+imageproc = "0.26.1"
 tracing = "0.1.44"
 tracing-subscriber = "0.3.23"
 thiserror = {version = "2.0.18"}

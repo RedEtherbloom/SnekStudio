@@ -2,6 +2,14 @@ use burn::config::Config;
 
 pub const HAND_DETECTOR_SIZE: usize = 192;
 
+pub enum BoundingBoxType {
+    XYWH,   // X1, Y1, Width, Height
+    YXHW,   // Y1, X1, Height, Width
+    XYXY,   // X1, Y1, X2, Y2
+    CXCYWH, // X_Center, Y_Center, Width, Height
+    Unknown,
+}
+
 #[derive(Config, Debug)]
 pub struct DetectionConfig {
     #[config(default = 0)]
@@ -73,6 +81,7 @@ mod tests {
                 .expect("Could not decode image");
         debug!("Loaded hand image");
 
+        // TODO: Can be done on the GPU using burn_vision::Transform
         let resized = hand_image.resize(
             HAND_DETECTOR_SIZE as u32,
             HAND_DETECTOR_SIZE as u32,
@@ -81,7 +90,7 @@ mod tests {
         assert_eq!(resized.height(), resized.width());
         debug!("Resized hand image");
 
-        let concatted_pixels: Vec<f32> = resized
+        let concatted_pixels: Vec<f32> = resized.clone()
             .to_rgb32f()
             .pixels()
             .flat_map(|pix| pix.channels())
@@ -116,6 +125,8 @@ mod tests {
             score_threshold: detection_config.nms_score_min_threshold,
             max_output_boxes: 0,
         };
+        // TODO: This gives incorrect results as mediapipe uses CXCYWH afaik, while
+        // burn_vision::Nms uses XYXY.
         let box_indices = boxes_subslice.nms(score_tensor.clone().squeeze(), nms_options);
         let remaining_boxes = box_tensor.select(1, box_indices.clone());
         debug!(
@@ -123,6 +134,16 @@ mod tests {
             ?remaining_boxes,
             "Finished Non-Maxium Suppression"
         );
+        let out:Vec<f32> = remaining_boxes.iter_dim(1).map(|el| el.squeeze_dims::<1>(&[0, 1])).next().expect("Expected to get at least one box").into_data().to_vec().unwrap();
+        assert!(out.len() >= 4);
+        let x_center = out[0];
+        let y_center = out[1];
+        let w = out[2];
+        let h = out[3];
+
+        let with_drawn_box = imageproc::drawing::draw_hollow_rect(&resized, imageproc::rect::Rect::at((x_center - w / 2.0) as i32, (y_center - h/2.0) as i32).of_size(w as u32, h as u32), image::Rgba::<u8>([127, 0, 127, 0]));
+        with_drawn_box.save("test_with_box.png").expect("Could not save image.");
+        debug!("Successfully saved image");
 
         info!("Test succeeded without issues");
     }
